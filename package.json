@@ -1,0 +1,14 @@
+{
+  "name": "repo-starter",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "pnpm -r --filter ./packages/* run dev",
+    "start": "pnpm -r --filter ./packages/backend run start",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
