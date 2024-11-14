@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "private": true,
   "scripts": {
     "dev": "pnpm -r --filter ./packages/* run dev",
     "start": "pnpm -r --filter ./packages/backend run start",
