@@ -5,8 +5,8 @@
   "main": "index.js",
   "private": true,
   "scripts": {
-    "dev": "pnpm -r --filter ./packages/* run dev",
-    "start": "pnpm -r --filter ./packages/backend run start",
+    "dev": "pnpm -r --filter \"./packages/*\" run dev",
+    "start": "pnpm -r --filter \"./packages/backend\" run start",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
