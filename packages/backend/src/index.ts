@@ -2,7 +2,6 @@ import { Elysia } from "elysia";
 import { db } from "./db";
 import { users } from "./db/schema";
 
-// Auto-migrate on Lambda startup
 let migrationPromise: Promise<void> | null = null;
 if (
   process.env.NODE_ENV === "production" ||
