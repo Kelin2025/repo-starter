@@ -9,7 +9,10 @@ const app = new Elysia()
     return allUsers;
   })
   .post("/api/users", async ({ body }) => {
-    const newUser = await db.insert(users).values(body as any).returning();
+    const newUser = await db
+      .insert(users)
+      .values(body as any)
+      .returning();
     return newUser[0];
   });
 
@@ -20,10 +23,13 @@ if (import.meta.env?.DEV || process.env.NODE_ENV === "development") {
 }
 
 // Lambda handler
-export const handler = async (event: any, context: any) => {
+export const handler = async (event: any) => {
   // Convert Lambda event to Request
-  const url = new URL(event.rawPath || event.path || "/", `https://${event.headers?.host || "localhost"}`);
-  
+  const url = new URL(
+    event.rawPath || event.path || "/",
+    `https://${event.headers?.host || "localhost"}`
+  );
+
   // Add query parameters
   if (event.queryStringParameters) {
     Object.entries(event.queryStringParameters).forEach(([key, value]) => {
@@ -39,7 +45,7 @@ export const handler = async (event: any, context: any) => {
 
   try {
     const response = await app.fetch(request);
-    
+
     return {
       statusCode: response.status,
       headers: Object.fromEntries(response.headers.entries()),

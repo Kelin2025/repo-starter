@@ -42,6 +42,12 @@ export default $config({
       link: [database],
       handler: "packages/backend/src/index.handler",
       runtime: "nodejs20.x",
+      copyFiles: [
+        {
+          from: "packages/backend/drizzle",
+          to: "drizzle",
+        },
+      ],
       nodejs: {
         loader: {
           ".node": "file",
@@ -91,9 +97,30 @@ export default $config({
       },
     });
 
+    // Migration Lambda for production
+    const migrationFunction = new sst.aws.Function("MigrationFunction", {
+      vpc,
+      link: [database],
+      handler: "packages/backend/src/migrate.handler",
+      runtime: "nodejs20.x",
+      timeout: "5 minutes",
+      copyFiles: [
+        {
+          from: "packages/backend/drizzle",
+          to: "drizzle",
+        },
+      ],
+      nodejs: {
+        loader: {
+          ".node": "file",
+        },
+      },
+    });
+
     return {
       api: api.url,
       web: web.url,
+      migration: migrationFunction.name,
     };
   },
 });

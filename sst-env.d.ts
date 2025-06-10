@@ -10,6 +10,10 @@ declare module "sst" {
       "type": "sst.aws.Function"
       "url": string
     }
+    "MigrationFunction": {
+      "name": string
+      "type": "sst.aws.Function"
+    }
     "PostgresDatabase": {
       "database": string
       "host": string
