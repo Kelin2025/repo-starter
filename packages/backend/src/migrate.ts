@@ -3,7 +3,7 @@ import { db } from "./db";
 
 async function main() {
   console.log("Running migrations...");
-  await migrate(db, { migrationsFolder: "./src/db/migrations" });
+  await migrate(db, { migrationsFolder: "./drizzle/migrations" });
   console.log("Migrations completed!");
   process.exit(0);
 }
