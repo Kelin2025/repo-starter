@@ -1,13 +1,56 @@
-import express from "express";
+import { Elysia } from "elysia";
+import { db } from "./db";
+import { users } from "./db/schema";
 
-const app = express();
+const app = new Elysia()
+  .get("/api", () => "Hello World!")
+  .get("/api/users", async () => {
+    const allUsers = await db.select().from(users);
+    return allUsers;
+  })
+  .post("/api/users", async ({ body }) => {
+    const newUser = await db.insert(users).values(body as any).returning();
+    return newUser[0];
+  });
 
-app.use(express.static("../../packages/website/dist"));
+// For local development
+if (import.meta.env?.DEV || process.env.NODE_ENV === "development") {
+  app.listen(3000);
+  console.log(`Server is running on http://localhost:3000`);
+}
 
-app.get("/api", (req, res) => {
-  res.send("Hello World!");
-});
+// Lambda handler
+export const handler = async (event: any, context: any) => {
+  // Convert Lambda event to Request
+  const url = new URL(event.rawPath || event.path || "/", `https://${event.headers?.host || "localhost"}`);
+  
+  // Add query parameters
+  if (event.queryStringParameters) {
+    Object.entries(event.queryStringParameters).forEach(([key, value]) => {
+      if (value) url.searchParams.set(key, value);
+    });
+  }
 
-app.listen(import.meta.env.PORT || 3000, () => {
-  console.log("Server is running on port 3000");
-});
+  const request = new Request(url.toString(), {
+    method: event.httpMethod || event.requestContext?.http?.method || "GET",
+    headers: event.headers || {},
+    body: event.body || undefined,
+  });
+
+  try {
+    const response = await app.fetch(request);
+    
+    return {
+      statusCode: response.status,
+      headers: Object.fromEntries(response.headers.entries()),
+      body: await response.text(),
+      isBase64Encoded: false,
+    };
+  } catch (error) {
+    console.error("Handler error:", error);
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ error: "Internal Server Error" }),
+    };
+  }
+};

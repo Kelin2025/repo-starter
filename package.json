@@ -5,11 +5,16 @@
   "main": "index.js",
   "private": true,
   "scripts": {
-    "dev": "pnpm -r --filter \"./packages/*\" run dev",
-    "start": "pnpm -r --filter \"./packages/backend\" run start",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "bun run --filter \"./packages/*\" dev",
+    "start": "bun run --filter \"./packages/backend\" start",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "sst:dev": "sst dev --stage development",
+    "sst:deploy": "sst deploy --stage production"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "workspaces": [
+    "packages/*"
+  ]
 }
