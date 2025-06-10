@@ -2,7 +2,32 @@ import { Elysia } from "elysia";
 import { db } from "./db";
 import { users } from "./db/schema";
 
+// Auto-migrate on Lambda startup
+let migrationPromise: Promise<void> | null = null;
+if (
+  process.env.NODE_ENV === "production" ||
+  process.env.AWS_LAMBDA_FUNCTION_NAME
+) {
+  migrationPromise = (async () => {
+    try {
+      console.log("Running automatic migrations...");
+      const { migrate } = await import("drizzle-orm/postgres-js/migrator");
+      await migrate(db, { migrationsFolder: "./drizzle/migrations" });
+      console.log("Migrations completed successfully");
+    } catch (error) {
+      console.error("Migration failed:", error);
+      throw error;
+    }
+  })();
+}
+
 const app = new Elysia()
+  .onBeforeHandle(async () => {
+    // Wait for migrations to complete before serving requests
+    if (migrationPromise) {
+      await migrationPromise;
+    }
+  })
   .get("/api", () => "Hello World!")
   .get("/api/users", async () => {
     const allUsers = await db.select().from(users);

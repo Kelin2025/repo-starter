@@ -8,8 +8,8 @@
 
 There's a couple dev commands
 
-- `DrizzleGenerate` will initialize Drizzle. Use it once after project setup
-- `DrizzleMigrate` will apply migrations to your database. Use it whenever db changes
+- `DrizzleGenerate` will generate migrations. Use it whenever db changes. Make sure you ran it before deploy
+- `DrizzleMigrate` will apply migrations to your local database
 
 # Contents
 

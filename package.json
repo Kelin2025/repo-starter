@@ -9,7 +9,8 @@
     "start": "bun run --filter \"./packages/backend\" start",
     "test": "echo \"Error: no test specified\" && exit 1",
     "sst:dev": "sst dev --stage development",
-    "sst:deploy": "sst deploy --stage production"
+    "sst:deploy": "sst deploy --stage production",
+    "migrate:prod": "bunx sst shell --stage production bun packages/backend/scripts/migrate-prod.ts"
   },
   "keywords": [],
   "author": "",
