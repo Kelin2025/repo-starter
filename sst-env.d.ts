@@ -5,30 +5,6 @@
 
 declare module "sst" {
   export interface Resource {
-    "Api": {
-      "name": string
-      "type": "sst.aws.Function"
-      "url": string
-    }
-    "MigrationFunction": {
-      "name": string
-      "type": "sst.aws.Function"
-    }
-    "PostgresDatabase": {
-      "database": string
-      "host": string
-      "password": string
-      "port": number
-      "type": "sst.aws.Postgres"
-      "username": string
-    }
-    "VPC": {
-      "type": "sst.aws.Vpc"
-    }
-    "Web": {
-      "type": "sst.aws.StaticSite"
-      "url": string
-    }
   }
 }
 /// <reference path="sst-env.d.ts" />

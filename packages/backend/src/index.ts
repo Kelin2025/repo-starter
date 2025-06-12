@@ -7,17 +7,21 @@ if (
   process.env.NODE_ENV === "production" ||
   process.env.AWS_LAMBDA_FUNCTION_NAME
 ) {
-  migrationPromise = (async () => {
+  const tryMigration = async () => {
     try {
       console.log("Running automatic migrations...");
       const { migrate } = await import("drizzle-orm/postgres-js/migrator");
       await migrate(db, { migrationsFolder: "./drizzle/migrations" });
       console.log("Migrations completed successfully");
     } catch (error) {
+      setTimeout(() => {
+        migrationPromise = tryMigration();
+      }, 1000);
       console.error("Migration failed:", error);
       throw error;
     }
-  })();
+    migrationPromise = tryMigration();
+  };
 }
 
 const app = new Elysia()

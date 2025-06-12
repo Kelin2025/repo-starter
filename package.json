@@ -9,7 +9,12 @@
     "start": "bun run --filter \"./packages/backend\" start",
     "test": "echo \"Error: no test specified\" && exit 1",
     "sst:dev": "sst dev --stage development",
-    "sst:deploy": "sst deploy --stage production"
+    "sst:deploy": "sst deploy --stage production",
+    "db:generate": "sst shell drizzle-kit generate",
+    "db:migrate": "sst shell drizzle-kit migrate",
+    "db:pull": "sst shell drizzle-kit pull",
+    "db:push": "sst shell drizzle-kit push",
+    "db:studio": "sst shell drizzle-kit studio"
   },
   "keywords": [],
   "author": "",
